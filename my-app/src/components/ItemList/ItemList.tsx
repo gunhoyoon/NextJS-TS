@@ -1,7 +1,9 @@
-import React from "react";
+import Link from "next/link";
+import React, { useRef } from "react";
 import { FC } from "react";
 import { Grid } from "semantic-ui-react";
-import { DosmeticItems } from "../../model/dosmeticProduct";
+import { DosmeticItem, DosmeticItems } from "../../model/dosmeticProduct";
+import styles from "./ItemList.module.css";
 
 interface Props {
   list: DosmeticItems;
@@ -10,12 +12,40 @@ interface Props {
 const ItemList: FC<Props> = ({ list }) => {
   return (
     <div>
-      <Grid columns={3}>
-        <Grid.Row>
-          {list.map((item) => (
-            <Grid.Column key={item.id}>
-              <img src={item.image_link} alt="logo" />
-              <span>{item.price}</span>
+      <Grid columns={3} divided>
+        <Grid.Row
+          style={{
+            display: "flex",
+            flexWrap: "Wrap", // 위스를 100%초과하면 자동으로 줄내림 처리
+            justifyContent: "center",
+            flexGrow: 1, // Grid.Row 가로 한줄을 나타내는거고 그 안에서 적용할 css들을 작성해줌 map할거니까 전부 적용된 상태로 나옴
+          }}
+        >
+          {list.map((item: DosmeticItem) => (
+            <Grid.Column
+              key={item.id} // map을 돌렸으니 각자의 고유 id값이 주어짐
+              style={{ width: "33%", textAlign: "center" }} // 여기서의 Grid.Column은 한칸한칸의 item들임 각각 고유 key값도 줬음 css도 각각 하나의 item에게 적용됨
+            >
+              <Link href={`/view/${item.id}`}>
+                {/* 각 고유의 item의 id로 상세페이지까지 고려를 해서 만들어진거임 */}
+                <a>
+                  {""}
+                  <div>
+                    <img
+                      style={{ width: 200 }}
+                      src={item.image_link}
+                      alt="logo"
+                    />
+                    <strong className={styles.item_name}>{item.name}</strong>
+                    {/* className은 모듈 css에서 strong적용 시 필요 */}
+                    {/* {item.name}은 모델링에서 타입정의한 속성중 하나 각각의 item들이 들어가는 부분 */}
+                    <a href="">
+                      <div className={styles.item_common_style}></div>
+                    </a>
+                    <span>{item.price}</span>
+                  </div>
+                </a>
+              </Link>
             </Grid.Column>
           ))}
         </Grid.Row>
@@ -23,6 +53,7 @@ const ItemList: FC<Props> = ({ list }) => {
     </div>
   );
 };
+// 건호야 너는 어디까지했ㄴ냐면  div style을 module 로 작성했고 그 이후 css 작업을 module로 해주면 돼
 
 export default ItemList;
 
