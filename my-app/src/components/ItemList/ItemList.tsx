@@ -53,7 +53,6 @@ const ItemList: FC<Props> = ({ list }) => {
     </div>
   );
 };
-// 건호야 너는 어디까지했ㄴ냐면  div style을 module 로 작성했고 그 이후 css 작업을 module로 해주면 돼
 
 export default ItemList;
 
